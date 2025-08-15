@@ -10,9 +10,10 @@ import About from "./components/About/About";
 import Faqs from "./components/Faqs/Faqs";
 import Contact from "./components/Contact/Contact";
 import Products from "./pages/Products";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
-  const { verify, isAuthenticated } = useAuthStore();
+  const { verify, isAuthenticated, user } = useAuthStore();
   useEffect(() => {
     verify();
   }, [verify]);
@@ -24,6 +25,16 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/faqs" element={<Faqs />} />
+        <Route
+          path="/dashboard"
+          element={
+            isAuthenticated && user && user.role === "admin" ? (
+              <Dashboard />
+            ) : (
+              <Navigate to={"/"} />
+            )
+          }
+        />
         <Route
           path="/signin"
           element={!isAuthenticated ? <Signin /> : <Navigate to={"/"} />}

@@ -13,7 +13,7 @@ import {
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, logout } = useAuthStore();
+  const { isAuthenticated, logout, user } = useAuthStore();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navLinks = [
@@ -22,6 +22,9 @@ const Navbar = () => {
     { label: "About", path: "/about" },
     { label: "Contact", path: "/contact" },
     { label: "Faqs", path: "/faqs" },
+    ...(user && user.role === "admin"
+      ? [{ label: "Dashboard", path: "/dashboard" }]
+      : []),
   ];
 
   return (
