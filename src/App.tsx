@@ -6,6 +6,9 @@ import useAuthStore from "./store/useAuthStore";
 import { useEffect } from "react";
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
+import About from "./components/About/About";
+import Faqs from "./components/Faqs/Faqs";
+import Contact from "./components/Contact/Contact";
 
 function App() {
   const { verify, isAuthenticated } = useAuthStore();
@@ -16,6 +19,9 @@ function App() {
     <div className="w-full bg-gray-100">
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/faqs" element={<Faqs />} />
         <Route
           path="/signin"
           element={!isAuthenticated ? <Signin /> : <Navigate to={"/"} />}

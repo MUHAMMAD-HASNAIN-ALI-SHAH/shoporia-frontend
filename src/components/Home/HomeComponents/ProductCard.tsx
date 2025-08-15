@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { StarIcon } from "@heroicons/react/24/solid";

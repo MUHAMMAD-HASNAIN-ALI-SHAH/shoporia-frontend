@@ -1,6 +1,3 @@
-
-
-import { Card } from "@/components/ui/card";
 import {
   Carousel as UiCarousel,
   CarouselContent,
@@ -24,7 +21,7 @@ const CarouselComponents = [
 
 export function ProductCarousel() {
   return (
-    <UiCarousel className="w-full h-full flex justify-left items-center">
+    <UiCarousel className="w-full h-[50vh] md:h-full flex justify-left items-center">
       <CarouselContent className="w-full h-full">
         {CarouselComponents.map((Component, index) => (
           <CarouselItem

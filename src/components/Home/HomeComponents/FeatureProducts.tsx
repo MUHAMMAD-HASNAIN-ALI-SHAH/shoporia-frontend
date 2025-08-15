@@ -1,5 +1,3 @@
-
-import React from "react";
 import { products } from "../../../data/products";
 import { motion } from "framer-motion";
 import {
@@ -34,10 +32,10 @@ const FeatureProducts = () => {
             {featuredProducts.map((feature, index) => (
               <CarouselItem
                 key={index}
-                className="md:basis-1/2 lg:basis-1/3 w-full"
+                className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4 w-full"
               >
                 <div className="p-4">
-                  <div>
+                  <div className="max-w-sm sm:w-full mx-auto">
                     <ProductCard product={feature} />
                   </div>
                 </div>

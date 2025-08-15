@@ -1,6 +1,55 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* ============================
+   Light Theme Custom Scrollbar
+   ============================ */
+
+/* Scrollbar dimensions & style */
+:root {
+  --scrollbar-size: 5px;
+  --scrollbar-radius: 12px;
+  --scrollbar-track: #f1f3f5;
+  --scrollbar-thumb: #0162a8;
+  --scrollbar-thumb-hover: #FFFFFF;
+}
+
+/* Keep layout stable when scrollbar appears */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+*::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: var(--scrollbar-radius);
+  border: 2px solid var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
