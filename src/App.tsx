@@ -9,6 +9,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import About from "./components/About/About";
 import Faqs from "./components/Faqs/Faqs";
 import Contact from "./components/Contact/Contact";
+import Products from "./pages/Products";
 
 function App() {
   const { verify, isAuthenticated } = useAuthStore();
@@ -19,6 +20,7 @@ function App() {
     <div className="w-full bg-gray-100">
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/products" element={<Products />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/faqs" element={<Faqs />} />
