@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Home/Navbar/Navbar";
 import { products as allProducts } from "@/data/products";
+import Footer from "@/components/Home/Footer/Footer";
 
 // Product type
 interface Product {
@@ -213,6 +214,7 @@ const Products = () => {
           </main>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
