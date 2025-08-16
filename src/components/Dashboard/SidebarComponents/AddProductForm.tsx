@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { X } from "lucide-react";
+import { useAdminStore } from "@/store/useAdminStore";
 
 export function AddProductForm() {
   const [name, setName] = useState("");
@@ -24,6 +25,8 @@ export function AddProductForm() {
   const [images, setImages] = useState<string[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const { addProduct, addProductLoader } = useAdminStore();
 
   const convertToBase64 = (file: File): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -82,8 +85,17 @@ export function AddProductForm() {
       images,
     };
 
-    console.log("Submitted Product Data:", productData);
-    setErrors({});
+    addProduct(productData).then(() => {
+      setName("");
+      setDescription("");
+      setPrice("");
+      setCategory("");
+      setStock("");
+      setStatus("");
+      setImages([]);
+      setImagePreviews([]);
+      setErrors({});
+    });
   };
 
   const inputStyle =
@@ -149,16 +161,30 @@ export function AddProductForm() {
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="men">Men's Clothing</SelectItem>
-                    <SelectItem value="women">Women's Clothing</SelectItem>
-                    <SelectItem value="children">
-                      Children's Clothing
+                    <SelectItem value="Electronics">Electronics</SelectItem>
+                    <SelectItem value="Men Clothing">Men Clothing</SelectItem>
+                    <SelectItem value="Women Clothing">
+                      Women Clothing
                     </SelectItem>
-                    <SelectItem value="electronics">Electronics</SelectItem>
-                    <SelectItem value="books">Books</SelectItem>
-                    <SelectItem value="home">Home</SelectItem>
+                    <SelectItem value="Home and Kitchen">
+                      Home and Kitchen
+                    </SelectItem>
+                    <SelectItem value="Books">Books</SelectItem>
+                    <SelectItem value="Toys">Toys</SelectItem>
+                    <SelectItem value="Beauty and Personal Care">
+                      Beauty & Personal Care
+                    </SelectItem>
+                    <SelectItem value="Sports and Outdoors">
+                      Sports & Outdoors
+                    </SelectItem>
+                    <SelectItem value="Health and Wellness">
+                      Health & Wellness
+                    </SelectItem>
+                    <SelectItem value="Automotive">Automotive</SelectItem>
+                    <SelectItem value="Others">Others</SelectItem>
                   </SelectContent>
                 </Select>
+
                 {errors.category && (
                   <p className="text-red-500 text-sm mt-1">{errors.category}</p>
                 )}
@@ -236,7 +262,11 @@ export function AddProductForm() {
 
             {/* Submit */}
             <div className="pt-4 border-t border-gray-200">
-              <Button type="submit" className="w-full md:w-auto px-6">
+              <Button
+                type="submit"
+                disabled={addProductLoader}
+                className="w-full md:w-auto px-6"
+              >
                 Add Product
               </Button>
             </div>
