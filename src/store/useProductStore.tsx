@@ -18,9 +18,13 @@ export interface Product {
 interface ProductState {
   products: Product[];
   getAllProducts: () => Promise<void>;
+  getProductByIdFromExistingProducts: (
+    productId: string
+  ) => Product | undefined;
+  updateProduct: (productId: string, updatedData: Partial<Product>) => void;
 }
 
-export const useProductStore = create<ProductState>((set) => ({
+export const useProductStore = create<ProductState>((set, get) => ({
   products: [],
 
   getAllProducts: async () => {
@@ -30,5 +34,16 @@ export const useProductStore = create<ProductState>((set) => ({
     } catch (error: any) {
       toast.error(error?.response?.data?.msg || "Failed to fetch products");
     }
+  },
+  getProductByIdFromExistingProducts: (productId) => {
+    const products = get().products;
+    return products.find((product) => product._id === productId);
+  },
+  updateProduct: (productId, updatedData) => {
+    set((state) => ({
+      products: state.products.map((product) =>
+        product._id === productId ? { ...product, ...updatedData } : product
+      ),
+    }));
   },
 }));

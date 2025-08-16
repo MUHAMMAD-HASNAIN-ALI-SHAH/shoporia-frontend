@@ -22,10 +22,9 @@ const ResetPassword = () => {
       if (!userId || !code) return;
       try {
         setLoading(true);
-        const response = await axiosInstance.get(
+        await axiosInstance.get(
           `/api/v1/auth/check-password-reset-details?userId=${userId}&code=${code}`
         );
-        console.log("Reset password request successful:", response.data);
         setLoading(false);
       } catch (error: any) {
         console.error("Error fetching reset password request:", error);

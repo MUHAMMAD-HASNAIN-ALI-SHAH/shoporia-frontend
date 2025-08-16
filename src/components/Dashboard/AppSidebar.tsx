@@ -62,7 +62,9 @@ export function AppSidebar() {
           </Button>
           <Button
             onClick={() => setSidebar("shipped-orders")}
-            variant={`${sidebarItem === "shipped-orders" ? "default" : "ghost"}`}
+            variant={`${
+              sidebarItem === "shipped-orders" ? "default" : "ghost"
+            }`}
             className="w-full justify-start gap-2"
           >
             <ListOrdered className="w-4 h-4" />
