@@ -12,7 +12,7 @@ export interface Product {
   stock: number;
   status: string;
   ratingsAverage?: number;
-  rattingsCount?: number;
+  ratingsCount?: number;
 }
 
 interface ProductState {

@@ -2,23 +2,18 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/Home/Navbar/Navbar";
 import Footer from "@/components/Home/Footer/Footer";
 import { useProductStore, type Product } from "@/store/useProductStore";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
-  // Filters
+  const navigate = useNavigate();
   const [categories, setCategories] = useState<string[]>([]);
   const [price, setPrice] = useState<number>(1000);
   const [ratings, setRatings] = useState<number[]>([]);
   const [availability, setAvailability] = useState<string[]>([]);
 
-  const { getAllProducts, products } = useProductStore();
+  const { products } = useProductStore();
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
-  // Fetch products once
-  useEffect(() => {
-    getAllProducts();
-  }, [getAllProducts]);
-
-  // Apply all filters in one pass
   useEffect(() => {
     const filtered = products.filter((p) => {
       const categoryMatch =
@@ -155,8 +150,9 @@ const Products = () => {
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (
                 <div
+                  onClick={() => navigate(`/products/${product._id}`)}
                   key={product._id}
-                  className="bg-white rounded-xl shadow hover:shadow-lg transition p-4 flex flex-col h-full min-h-[350px] w-full"
+                  className="bg-white cursor-pointer rounded-xl shadow hover:shadow-lg transition p-4 flex flex-col h-full min-h-[350px] w-full"
                 >
                   {product.images?.length > 0 && (
                     <img

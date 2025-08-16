@@ -68,7 +68,7 @@ const Navbar = () => {
                 <MenubarTrigger className="bg-none">
                   <User className="text-blue-500 hover:text-blue-700 cursor-pointer" />
                 </MenubarTrigger>
-                <MenubarContent>
+                <MenubarContent className="mr-5 md:mr-28">
                   <MenubarItem onClick={() => navigate("/profile")}>
                     Profile
                   </MenubarItem>

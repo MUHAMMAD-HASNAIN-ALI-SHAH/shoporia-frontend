@@ -11,9 +11,15 @@ import Faqs from "./components/Faqs/Faqs";
 import Contact from "./components/Contact/Contact";
 import Products from "./pages/Products";
 import Dashboard from "./pages/Dashboard";
+import ProductPage from "./pages/ProductPage";
+import { useProductStore } from "./store/useProductStore";
 
 function App() {
   const { verify, isAuthenticated, user } = useAuthStore();
+  const { getAllProducts } = useProductStore();
+  useEffect(() => {
+    getAllProducts();
+  }, [getAllProducts]);
   useEffect(() => {
     verify();
   }, [verify]);
@@ -25,6 +31,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/faqs" element={<Faqs />} />
+        <Route path="/products/:productId" element={<ProductPage />} />
         <Route
           path="/dashboard"
           element={
