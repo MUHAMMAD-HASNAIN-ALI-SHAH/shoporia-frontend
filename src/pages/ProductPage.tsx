@@ -6,11 +6,13 @@ import axiosInstance from "@/lib/axios";
 import { useProductStore, type Product } from "@/store/useProductStore";
 import Navbar from "@/components/Home/Navbar/Navbar";
 import Footer from "@/components/Home/Footer/Footer";
+import { useCartStore } from "@/store/useCartStore";
 
 export default function ProductPage() {
   const { productId } = useParams();
   const navigate = useNavigate();
   const { products } = useProductStore();
+  const { addToCart, addToCartLoader } = useCartStore();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<string>("");
@@ -162,14 +164,18 @@ export default function ProductPage() {
 
             {/* Action Button */}
             <motion.button
+              onClick={() => addToCart(product._id!, 1)}
               whileTap={{ scale: 0.95 }}
-              disabled={product.stock === 0}
+              disabled={product.stock === 0 || addToCartLoader}
               className={`px-6 py-3 rounded-xl font-medium transition ${
                 product.stock > 0
                   ? "bg-blue-600 text-white hover:bg-blue-700"
                   : "bg-gray-400 text-gray-700 cursor-not-allowed"
               }`}
             >
+              {addToCartLoader && (
+                <Loader2 className="inline-block mr-2 animate-spin h-5 w-5" />
+              )}
               {product.stock > 0 ? "Add to Cart" : "Unavailable"}
             </motion.button>
           </div>

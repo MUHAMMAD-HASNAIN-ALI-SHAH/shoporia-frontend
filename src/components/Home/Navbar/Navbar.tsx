@@ -72,6 +72,9 @@ const Navbar = () => {
                   <MenubarItem onClick={() => navigate("/profile")}>
                     Profile
                   </MenubarItem>
+                  <MenubarItem onClick={() => navigate("/my-cart")}>
+                    My Cart
+                  </MenubarItem>
                   <MenubarItem onClick={logout}>Logout</MenubarItem>
                 </MenubarContent>
               </MenubarMenu>

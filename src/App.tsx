@@ -13,6 +13,7 @@ import Products from "./pages/Products";
 import Dashboard from "./pages/Dashboard";
 import ProductPage from "./pages/ProductPage";
 import { useProductStore } from "./store/useProductStore";
+import MyCart from "./pages/MyCart";
 
 function App() {
   const { verify, isAuthenticated, user } = useAuthStore();
@@ -37,6 +38,16 @@ function App() {
           element={
             isAuthenticated && user && user.role === "admin" ? (
               <Dashboard />
+            ) : (
+              <Navigate to={"/"} />
+            )
+          }
+        />
+        <Route
+          path="/my-cart"
+          element={
+            isAuthenticated && user ? (
+              <MyCart />
             ) : (
               <Navigate to={"/"} />
             )
