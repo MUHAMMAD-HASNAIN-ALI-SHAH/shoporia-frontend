@@ -14,20 +14,22 @@ import { useAdminStore } from "@/store/useAdminStore";
 export function PlacedOrders() {
   const { orders } = useAdminStore();
 
+  const filteredOrders = orders.filter((p) => p.status === "placed");
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6">
       <h1 className="font-bold text-2xl mb-4">New Orders</h1>
 
       <div className="overflow-x-auto">
         <Table className="min-w-[600px]">
-          <TableCaption className="text-sm text-gray-500">
-            A list of all product orders.
-          </TableCaption>
+          {filteredOrders.length > 0 && (
+            <TableCaption className="text-sm text-gray-500">
+              A list of all orders.
+            </TableCaption>
+          )}
 
           <TableHeader>
             <TableRow>
               <TableHead>Cart ID</TableHead>
-              <TableHead>User Email</TableHead>
               <TableHead>Product Name</TableHead>
               <TableHead>Order Date</TableHead>
               <TableHead className="text-center">Actions</TableHead>
@@ -35,32 +37,29 @@ export function PlacedOrders() {
           </TableHeader>
 
           <TableBody>
-            {orders.map((order) =>
-              order.items.map((item) => (
-                <TableRow key={item.product._id}>
-                  <TableCell>{order._id}</TableCell>
-                  <TableCell>{order.email}</TableCell>
-                  <TableCell>{item.product.name}</TableCell>
-                  <TableCell>
-                    {new Date(order.createdAt).toLocaleString()}
-                  </TableCell>
-                  <TableCell className="flex justify-center gap-2 sm:gap-3">
-                    <Button size="sm" variant="outline">
-                      Placed
-                    </Button>
-                    <Button variant="destructive" size="sm">
-                      Canceled
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
+            {filteredOrders.map((order, index) => (
+              <TableRow key={index}>
+                <TableCell>{order.cartId}</TableCell>
+                <TableCell>{order.product.name}</TableCell>
+                <TableCell>
+                  {new Date(order.createdAt).toLocaleString()}
+                </TableCell>
+                <TableCell className="flex justify-center gap-2 sm:gap-3">
+                  <Button size="sm" variant="outline">
+                    Ready for Shipped
+                  </Button>
+                  <Button variant="destructive" size="sm">
+                    Cancel order
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
 
           <TableFooter>
             <TableRow>
               <TableCell colSpan={5} className="font-semibold">
-                Total Orders: {orders.length}
+                Total Orders: {filteredOrders.length}
               </TableCell>
             </TableRow>
           </TableFooter>

@@ -10,14 +10,9 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { useAdminStore } from "@/store/useAdminStore";
-import { useEffect } from "react";
 
 export function NewOrders() {
-  const { orders, getAllOrders } = useAdminStore();
-
-  useEffect(() => {
-    getAllOrders();
-  }, [getAllOrders]);
+  const { orders } = useAdminStore();
 
   const filteredOrders = orders.filter((p) => p.status === "pending");
   return (
@@ -49,10 +44,10 @@ export function NewOrders() {
                 </TableCell>
                 <TableCell className="flex justify-center gap-2 sm:gap-3">
                   <Button size="sm" variant="outline">
-                    Placed
+                    Place order
                   </Button>
                   <Button variant="destructive" size="sm">
-                    Canceled
+                    Cancel order
                   </Button>
                 </TableCell>
               </TableRow>

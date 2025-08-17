@@ -53,12 +53,31 @@ export function AppSidebar() {
             Add Product
           </Button>
           <Button
+            onClick={() => setSidebar("see-products")}
+            variant={`${sidebarItem === "see-products" ? "default" : "ghost"}`}
+            className="w-full justify-start gap-2"
+          >
+            <Package className="w-4 h-4" />
+            See Products
+          </Button>
+        </SidebarGroup>
+
+        <SidebarGroup className="flex flex-col gap-3">
+          <Button
             onClick={() => setSidebar("new-orders")}
             variant={`${sidebarItem === "new-orders" ? "default" : "ghost"}`}
             className="w-full justify-start gap-2"
           >
             <ListOrdered className="w-4 h-4" />
             New Orders
+          </Button>
+          <Button
+            onClick={() => setSidebar("placed-orders")}
+            variant={`${sidebarItem === "placed-orders" ? "default" : "ghost"}`}
+            className="w-full justify-start gap-2"
+          >
+            <ListOrdered className="w-4 h-4" />
+            Placed Orders
           </Button>
           <Button
             onClick={() => setSidebar("shipped-orders")}
@@ -70,25 +89,6 @@ export function AppSidebar() {
             <ListOrdered className="w-4 h-4" />
             Shipped Orders
           </Button>
-          <Button
-            onClick={() => setSidebar("placed-orders")}
-            variant={`${sidebarItem === "placed-orders" ? "default" : "ghost"}`}
-            className="w-full justify-start gap-2"
-          >
-            <ListOrdered className="w-4 h-4" />
-            Placed Orders
-          </Button>
-          <Button
-            onClick={() => setSidebar("see-products")}
-            variant={`${sidebarItem === "see-products" ? "default" : "ghost"}`}
-            className="w-full justify-start gap-2"
-          >
-            <Package className="w-4 h-4" />
-            See Products
-          </Button>
-        </SidebarGroup>
-
-        <SidebarGroup className="flex flex-col gap-3">
           <Button
             onClick={() => setSidebar("completed-orders")}
             variant={`${
