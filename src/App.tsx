@@ -14,9 +14,11 @@ import Dashboard from "./pages/Dashboard";
 import ProductPage from "./pages/ProductPage";
 import { useProductStore } from "./store/useProductStore";
 import MyCart from "./pages/MyCart";
+import { MyOrders } from "./pages/MyOrders";
+import { Loader2 } from "lucide-react";
 
 function App() {
-  const { verify, isAuthenticated, user } = useAuthStore();
+  const { verify, isAuthenticated,isAuthenticatedLoading, user } = useAuthStore();
   const { getAllProducts } = useProductStore();
   useEffect(() => {
     getAllProducts();
@@ -24,6 +26,15 @@ function App() {
   useEffect(() => {
     verify();
   }, [verify]);
+
+  if(isAuthenticatedLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
+      </div>
+    );
+  }
+
   return (
     <div className="w-full bg-gray-100">
       <Routes>
@@ -45,12 +56,12 @@ function App() {
         />
         <Route
           path="/my-cart"
+          element={isAuthenticated && user ? <MyCart /> : <Navigate to={"/"} />}
+        />
+        <Route
+          path="/my-orders"
           element={
-            isAuthenticated && user ? (
-              <MyCart />
-            ) : (
-              <Navigate to={"/"} />
-            )
+            isAuthenticated && user ? <MyOrders /> : <Navigate to={"/"} />
           }
         />
         <Route

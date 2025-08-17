@@ -1,45 +1,41 @@
+import type { Order } from "@/interface/interface";
 import axiosInstance from "@/lib/axios";
 import { toast } from "react-toastify";
 import { create } from "zustand";
 
-export interface CartItem {
-  product: {
-    _id: string;
-    name?: string;
-    price?: number;
-    images?: string;
-  };
-  quantity: number;
-}
-
 export interface Cart {
   _id?: string;
-  email?: string; // ✅ corrected (backend uses email)
-  items: CartItem[];
+  email?: string;
+  paymentStatus?: string;
 }
 
 interface CartState {
   cart: Cart | null;
+  orders: Order[];
   isLoading: boolean;
   addToCartLoader: boolean;
   fetchCart: () => Promise<void>;
   addToCart: (productId: string, quantity: number) => Promise<void>;
-  updateQuantity: (productId: string, quantity: number) => Promise<void>;
-  removeFromCart: (productId: string) => Promise<void>;
+  updateQuantity: (orderId: string, quantity: number) => Promise<void>;
+  removeFromCart: (orderId: string) => Promise<void>;
   clearCart: () => Promise<void>;
 }
 
 export const useCartStore = create<CartState>((set) => ({
   cart: null,
+  orders: [],
   isLoading: false,
   addToCartLoader: false,
 
-  // Get current cart
+  // Get current cart and its orders
   fetchCart: async () => {
     set({ isLoading: true });
     try {
       const response = await axiosInstance.get("/api/v4/cart");
-      set({ cart: response.data.cart ?? response.data });
+      set({
+        cart: response.data.cart,
+        orders: response.data.orders || [],
+      });
     } catch (error) {
       console.error("Error fetching cart:", error);
     } finally {
@@ -56,7 +52,10 @@ export const useCartStore = create<CartState>((set) => ({
         quantity,
       });
       toast.success("Item added to cart successfully");
-      set({ cart: response.data.cart });
+      set({
+        cart: response.data.cart,
+        orders: response.data.orders,
+      });
     } catch (error) {
       console.error("Error adding to cart:", error);
     } finally {
@@ -64,28 +63,26 @@ export const useCartStore = create<CartState>((set) => ({
     }
   },
 
-  // Update item quantity (increase / decrease)
-  updateQuantity: async (productId, quantity) => {
+  // Update item quantity
+  updateQuantity: async (orderId, quantity) => {
     try {
       const response = await axiosInstance.put("/api/v4/cart/update", {
-        productId,
+        orderId,
         quantity,
       });
       toast.success("Cart updated successfully");
-      set({ cart: response.data.cart });
+      set({ orders: response.data.orders });
     } catch (error) {
       console.error("Error updating cart:", error);
     }
   },
 
   // Remove item
-  removeFromCart: async (productId) => {
+  removeFromCart: async (orderId) => {
     try {
-      const response = await axiosInstance.delete(
-        `/api/v4/cart/remove/${productId}`
-      );
+      const response = await axiosInstance.delete(`/api/v4/cart/remove/${orderId}`);
       toast.success("Item removed from cart successfully");
-      set({ cart: response.data.cart });
+      set({ orders: response.data.orders });
     } catch (error) {
       console.error("Error removing from cart:", error);
     }
@@ -94,9 +91,9 @@ export const useCartStore = create<CartState>((set) => ({
   // Clear cart
   clearCart: async () => {
     try {
-      const response = await axiosInstance.delete("/api/v4/cart/clear");
+      await axiosInstance.delete("/api/v4/cart/clear");
       toast.success("Cart cleared successfully");
-      set({ cart: response.data.cart });
+      set({ orders: [] });
     } catch (error) {
       console.error("Error clearing cart:", error);
     }

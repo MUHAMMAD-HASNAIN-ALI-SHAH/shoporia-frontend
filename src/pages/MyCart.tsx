@@ -2,10 +2,12 @@ import Footer from "@/components/Home/Footer/Footer";
 import Navbar from "@/components/Home/Navbar/Navbar";
 import { useCartStore } from "@/store/useCartStore";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
+import axiosInstance from "@/lib/axios";
 
 const MyCart = () => {
   const {
-    cart,
+    orders,
     isLoading,
     fetchCart,
     updateQuantity,
@@ -17,6 +19,17 @@ const MyCart = () => {
     fetchCart();
   }, [fetchCart]);
 
+  const handleCheckout = async () => {
+    try {
+      const res = await axiosInstance.post(
+        "/api/v5/payment/create-checkout-session"
+      );
+      window.location.href = res.data.url;
+    } catch (error) {
+      toast.error("Failed to initiate checkout. Please try again later.");
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -25,11 +38,10 @@ const MyCart = () => {
     );
   }
 
-  const totalPrice =
-    cart?.items?.reduce(
-      (acc, item) => acc + (item.product.price || 0) * item.quantity,
-      0
-    ) || 0;
+  const totalPrice = orders.reduce(
+    (acc, item) => acc + (item.product.price || 0) * item.quantity,
+    0
+  );
 
   return (
     <div className="w-full">
@@ -38,14 +50,14 @@ const MyCart = () => {
         <div className="p-4">
           <h2 className="text-xl font-bold mb-4">My Cart</h2>
 
-          {!cart || cart.items.length === 0 ? (
+          {orders.length === 0 ? (
             <p>No items in cart</p>
           ) : (
             <>
               <div className="space-y-4">
-                {cart.items.map((item) => (
+                {orders.map((item) => (
                   <div
-                    key={item.product._id}
+                    key={item._id} // orderId
                     className="flex items-center justify-between border p-2 rounded-md"
                   >
                     <div className="flex items-center gap-3">
@@ -64,22 +76,18 @@ const MyCart = () => {
                       </div>
                     </div>
 
-                    {/* Quantity + Actions */}
                     <div className="flex items-center gap-2">
                       <input
                         type="number"
                         value={item.quantity}
                         min={1}
                         onChange={(e) =>
-                          updateQuantity(
-                            item.product._id,
-                            parseInt(e.target.value)
-                          )
+                          updateQuantity(item._id!, parseInt(e.target.value))
                         }
                         className="w-16 border rounded px-2"
                       />
                       <button
-                        onClick={() => removeFromCart(item.product._id)}
+                        onClick={() => removeFromCart(item._id!)}
                         className="bg-red-500 text-white px-3 py-1 rounded"
                       >
                         Remove
@@ -89,11 +97,10 @@ const MyCart = () => {
                 ))}
               </div>
 
-              {/* Cart summary */}
               <div className="mt-6 p-4 border rounded-md bg-gray-50">
                 <h3 className="text-lg font-semibold mb-2">Cart Summary</h3>
                 <p className="text-gray-700 mb-2">
-                  Total Items: {cart.items.length}
+                  Total Items: {orders.length}
                 </p>
                 <p className="text-gray-700 mb-4">
                   Total Price: <span className="font-bold">${totalPrice}</span>
@@ -105,7 +112,10 @@ const MyCart = () => {
                   >
                     Clear Cart
                   </button>
-                  <button className="bg-green-600 text-white px-4 py-2 rounded">
+                  <button
+                    onClick={handleCheckout}
+                    className="bg-green-600 text-white px-4 py-2 rounded"
+                  >
                     Checkout
                   </button>
                 </div>

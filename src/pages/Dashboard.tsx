@@ -9,11 +9,17 @@ import { OrdersForShip } from "@/components/Dashboard/SidebarComponents/OrderFor
 import { PlacedOrders } from "@/components/Dashboard/SidebarComponents/PlacedOrders";
 import SeeProducts from "@/components/Dashboard/SidebarComponents/SeeProducts";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { useAdminStore } from "@/store/useAdminStore";
 import { useSidebarStore } from "@/store/useSidebar";
 import { Logs } from "lucide-react";
+import { useEffect } from "react";
 
 const Dashboard = () => {
   const { sidebarItem } = useSidebarStore();
+  const { getAllOrders } = useAdminStore();
+  useEffect(() => {
+    getAllOrders();
+  }, [getAllOrders]);
   return (
     <SidebarProvider className="flex min-h-screen w-full">
       {/* Sidebar stays fixed */}

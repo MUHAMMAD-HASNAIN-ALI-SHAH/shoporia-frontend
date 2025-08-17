@@ -1,19 +1,7 @@
+import type { Product } from "@/interface/interface";
 import axiosInstance from "@/lib/axios";
 import { toast } from "react-toastify";
 import { create } from "zustand";
-
-export interface Product {
-  _id?: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  images: string[];
-  stock: number;
-  status: string;
-  ratingsAverage?: number;
-  ratingsCount?: number;
-}
 
 interface ProductState {
   products: Product[];

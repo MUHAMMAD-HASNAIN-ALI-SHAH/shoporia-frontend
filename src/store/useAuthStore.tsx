@@ -1,13 +1,7 @@
 import { create } from "zustand";
 import axiosInstance from "../lib/axios";
 import { toast } from "react-toastify";
-
-interface User {
-  _id?: string;
-  email: string;
-  username?: string;
-  role?: string;
-}
+import type { User } from "@/interface/interface";
 
 interface AuthState {
   user: User | null;
