@@ -1,7 +1,7 @@
 import axiosInstance from "@/lib/axios";
 import { toast } from "react-toastify";
 import { create } from "zustand";
-import { useProductStore, } from "./useProductStore";
+import { useProductStore } from "./useProductStore";
 import type { Order, Product } from "@/interface/interface";
 
 interface AdminState {
@@ -17,15 +17,18 @@ interface AdminState {
   editProduct: (productId: string, productData: Product) => Promise<number>;
   setProductForEditOrDelete: (productId: string) => void;
   removeProductForEditOrDelete: () => void;
+  updateOrderStatusLoader: boolean;
+  updateOrderStatus: (orderId: string, status: string) => Promise<void>;
 }
 
-export const useAdminStore = create<AdminState>((set) => ({
+export const useAdminStore = create<AdminState>((set, get) => ({
   orders: [],
   productForEditOrDelete: null,
   addProductLoader: false,
   gettingAllOrdersLoader: false,
   editProductLoader: false,
   deleteProductLoader: false,
+  updateOrderStatusLoader: false,
 
   addProduct: async (productData) => {
     try {
@@ -94,6 +97,43 @@ export const useAdminStore = create<AdminState>((set) => ({
       console.error("Error fetching orders:", error);
     } finally {
       set({ gettingAllOrdersLoader: false });
+    }
+  },
+
+  updateOrderStatus: async (orderId, status) => {
+    try {
+      if (get().updateOrderStatusLoader) return;
+      set({ updateOrderStatusLoader: true });
+      await axiosInstance.post(`/api/v6/order/update-order-status`, {
+        orderId,
+        status,
+      });
+      set({
+        orders: useAdminStore.getState().orders.map((order) =>
+          order._id === orderId
+            ? {
+                ...order,
+                status: status as
+                  | "pending"
+                  | "placed"
+                  | "canceled"
+                  | "shipped"
+                  | "delivered",
+              }
+            : order
+        ),
+      });
+      if (!toast.isActive("order-status")) {
+        toast.success("Order status updated successfully", {
+          toastId: "order-status",
+        });
+      }
+      set({ updateOrderStatusLoader: false });
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.msg || "Failed to update order status"
+      );
+      set({ updateOrderStatusLoader: false });
     }
   },
 }));

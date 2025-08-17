@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useAdminStore } from "@/store/useAdminStore";
 
 export function NewOrders() {
-  const { orders } = useAdminStore();
+  const { orders, updateOrderStatus } = useAdminStore();
 
   const filteredOrders = orders.filter((p) => p.status === "pending");
   return (
@@ -27,7 +27,7 @@ export function NewOrders() {
 
           <TableHeader>
             <TableRow>
-              <TableHead>Cart ID</TableHead>
+              <TableHead>Order ID</TableHead>
               <TableHead>Product Name</TableHead>
               <TableHead>Order Date</TableHead>
               <TableHead className="text-center">Actions</TableHead>
@@ -37,16 +37,24 @@ export function NewOrders() {
           <TableBody>
             {filteredOrders.map((order, index) => (
               <TableRow key={index}>
-                <TableCell>{order.cartId}</TableCell>
+                <TableCell>{order.product._id}</TableCell>
                 <TableCell>{order.product.name}</TableCell>
                 <TableCell>
                   {new Date(order.createdAt).toLocaleString()}
                 </TableCell>
                 <TableCell className="flex justify-center gap-2 sm:gap-3">
-                  <Button size="sm" variant="outline">
+                  <Button
+                    onClick={() => updateOrderStatus(order._id!, "placed")}
+                    size="sm"
+                    variant="outline"
+                  >
                     Place order
                   </Button>
-                  <Button variant="destructive" size="sm">
+                  <Button
+                    onClick={() => updateOrderStatus(order._id!, "canceled")}
+                    variant="destructive"
+                    size="sm"
+                  >
                     Cancel order
                   </Button>
                 </TableCell>
@@ -57,7 +65,7 @@ export function NewOrders() {
           <TableFooter>
             <TableRow>
               <TableCell colSpan={5} className="font-semibold">
-                Total Orders: {orders.length}
+                Total Orders: {filteredOrders.length}
               </TableCell>
             </TableRow>
           </TableFooter>

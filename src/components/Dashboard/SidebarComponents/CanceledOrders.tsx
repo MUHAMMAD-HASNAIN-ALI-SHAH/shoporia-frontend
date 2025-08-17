@@ -9,76 +9,61 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-
-const canceledOrders = [
-  {
-    invoiceId: "INV101",
-    userId: "USR111",
-    productId: "PRD101",
-    orderDate: "2025-05-01",
-    cancelDate: "2025-05-02",
-    reason: "Customer requested cancellation",
-  },
-  {
-    invoiceId: "INV102",
-    userId: "USR222",
-    productId: "PRD102",
-    orderDate: "2025-05-03",
-    cancelDate: "2025-05-04",
-    reason: "Out of stock",
-  },
-  {
-    invoiceId: "INV103",
-    userId: "USR333",
-    productId: "PRD103",
-    orderDate: "2025-05-05",
-    cancelDate: "2025-05-06",
-    reason: "Payment failure",
-  },
-];
+import { useAdminStore } from "@/store/useAdminStore";
 
 export function CanceledOrders() {
+  const { orders, updateOrderStatus } = useAdminStore();
+
+  const filteredOrders = orders.filter((p) => p.status === "canceled");
   return (
-    <div className="px-5 py-3">
-      <h1 className="font-bold text-2xl py-3">Canceled Orders</h1>
-    <Table>
-      <TableCaption>A list of all canceled product orders.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Invoice ID</TableHead>
-          <TableHead>User ID</TableHead>
-          <TableHead>Product ID</TableHead>
-          <TableHead>Order Date</TableHead>
-          <TableHead>Cancel Date</TableHead>
-          <TableHead className="text-center">Reason</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {canceledOrders.map((order) => (
-          <TableRow key={order.invoiceId}>
-            <TableCell>{order.invoiceId}</TableCell>
-            <TableCell>{order.userId}</TableCell>
-            <TableCell>{order.productId}</TableCell>
-            <TableCell>{order.orderDate}</TableCell>
-            <TableCell>{order.cancelDate}</TableCell>
-            <TableCell className="flex justify-center">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => alert(`Reason: ${order.reason}`)}
-              >
-                Reason
-              </Button>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={6}>Total Canceled Orders: {canceledOrders.length}</TableCell>
-        </TableRow>
-      </TableFooter>
-    </Table>
+    <div className="px-4 sm:px-6 lg:px-8 py-6">
+      <h1 className="font-bold text-2xl mb-4">New Orders</h1>
+
+      <div className="overflow-x-auto">
+        <Table className="min-w-[600px]">
+          <TableCaption className="text-sm text-gray-500">
+            A list of all orders.
+          </TableCaption>
+
+          <TableHeader>
+            <TableRow>
+              <TableHead>Order ID</TableHead>
+              <TableHead>Product Name</TableHead>
+              <TableHead>Order Date</TableHead>
+              <TableHead className="text-center">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {filteredOrders.map((order, index) => (
+              <TableRow key={index}>
+                <TableCell>{order.product._id}</TableCell>
+                <TableCell>{order.product.name}</TableCell>
+                <TableCell>
+                  {new Date(order.createdAt).toLocaleString()}
+                </TableCell>
+                <TableCell className="flex justify-center gap-2 sm:gap-3">
+                  <Button
+                    onClick={() => updateOrderStatus(order._id!, "placed")}
+                    size="sm"
+                    variant="outline"
+                  >
+                    Place order
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={5} className="font-semibold">
+                Total Orders: {filteredOrders.length}
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </div>
     </div>
   );
 }

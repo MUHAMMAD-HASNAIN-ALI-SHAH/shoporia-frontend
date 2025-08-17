@@ -9,77 +9,61 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-
-const orders = [
-  {
-    invoiceId: "INV001",
-    userId: "USR123",
-    productId: "PRD001",
-    orderDate: "2025-05-01",
-  },
-  {
-    invoiceId: "INV002",
-    userId: "USR456",
-    productId: "PRD002",
-    orderDate: "2025-05-02",
-  },
-  {
-    invoiceId: "INV003",
-    userId: "USR789",
-    productId: "PRD003",
-    orderDate: "2025-05-03",
-  },
-  {
-    invoiceId: "INV004",
-    userId: "USR321",
-    productId: "PRD004",
-    orderDate: "2025-05-04",
-  },
-  {
-    invoiceId: "INV005",
-    userId: "USR654",
-    productId: "PRD005",
-    orderDate: "2025-05-05",
-  },
-];
+import { useAdminStore } from "@/store/useAdminStore";
 
 export function OrdersForShip() {
+  const { orders, updateOrderStatus } = useAdminStore();
+
+  const filteredOrders = orders.filter((p) => p.status === "shipped");
   return (
-    <div className="px-5 py-3">
-      <h1 className="font-bold text-2xl py-3">Orders Currently under Shipping</h1>
-      <Table>
-        <TableCaption>A list of all product orders.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Invoice ID</TableHead>
-            <TableHead>User ID</TableHead>
-            <TableHead>Product ID</TableHead>
-            <TableHead>Order Date</TableHead>
-            <TableHead className="text-center">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {orders.map((order) => (
-            <TableRow key={order.invoiceId}>
-              <TableCell>{order.invoiceId}</TableCell>
-              <TableCell>{order.userId}</TableCell>
-              <TableCell>{order.productId}</TableCell>
-              <TableCell>{order.orderDate}</TableCell>
-              <TableCell className="flex justify-center gap-3">
-                <Button size="sm">Shipped</Button>
-                <Button variant="destructive" size="sm">
-                  Canceled
-                </Button>
+    <div className="px-4 sm:px-6 lg:px-8 py-6">
+      <h1 className="font-bold text-2xl mb-4">New Orders</h1>
+
+      <div className="overflow-x-auto">
+        <Table className="min-w-[600px]">
+          <TableCaption className="text-sm text-gray-500">
+            A list of all orders.
+          </TableCaption>
+
+          <TableHeader>
+            <TableRow>
+              <TableHead>Order ID</TableHead>
+              <TableHead>Product Name</TableHead>
+              <TableHead>Order Date</TableHead>
+              <TableHead className="text-center">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {filteredOrders.map((order, index) => (
+              <TableRow key={index}>
+                <TableCell>{order.product._id}</TableCell>
+                <TableCell>{order.product.name}</TableCell>
+                <TableCell>
+                  {new Date(order.createdAt).toLocaleString()}
+                </TableCell>
+                <TableCell className="flex justify-center gap-2 sm:gap-3">
+                  <Button
+                    onClick={() => updateOrderStatus(order._id!, "delivered")}
+                    size="sm"
+                    variant="outline"
+                  >
+                    Delivered
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={5} className="font-semibold">
+                Total Orders: {filteredOrders.length}
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={5}>Total Orders: {orders.length}</TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
+          </TableFooter>
+        </Table>
+      </div>
     </div>
   );
 }

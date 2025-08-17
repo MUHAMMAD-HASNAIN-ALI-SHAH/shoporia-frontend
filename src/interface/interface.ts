@@ -17,7 +17,7 @@ export interface Order {
   product: Product;
   quantity: number;
   createdAt: string;
-  status: "pending" | "placed" | "canceled";
+  status: "pending" | "placed" | "canceled" | "shipped" | "delivered";
 }
 
 export interface User {
