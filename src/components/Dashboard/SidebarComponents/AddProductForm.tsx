@@ -81,7 +81,7 @@ export function AddProductForm() {
       price: parseFloat(price),
       category,
       stock: parseInt(stock),
-      status,
+      status: status as "active" | "inactive",
       images,
     };
 

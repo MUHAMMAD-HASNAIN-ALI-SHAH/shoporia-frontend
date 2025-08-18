@@ -94,7 +94,7 @@ export function EditOrDeleteProduct({
       price: parseFloat(price),
       category,
       stock: parseInt(stock),
-      status,
+      status: status as "active" | "inactive",
       images,
     };
 

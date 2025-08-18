@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import type { Product } from "@/interface/interface";
+import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const {
@@ -13,6 +14,7 @@ const ProductCard = ({ product }: { product: Product }) => {
     ratingsAverage,
     ratingsCount,
   } = product;
+  const navigate = useNavigate();
 
   return (
     <motion.div
@@ -20,6 +22,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       className=""
+      onClick={() => navigate(`/products/${product._id}`)}
     >
       <div className="relative overflow-hidden rounded-lg">
         <img
