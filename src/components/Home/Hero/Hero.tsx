@@ -1,10 +1,16 @@
+import { useNavigate } from "react-router-dom";
+
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <div className="w-full flex justify-center mt-28 select-none">
       <div className="w-full h-[60vh] flex items-center pt-10 px-4 md:px-10">
         <div className="w-full h-full flex gap-4">
           {/* Left side - Kids */}
-          <div className="relative w-[70%] overflow-hidden rounded-2xl shadow-lg group">
+          <div
+            onClick={() => navigate("/products")}
+            className="relative w-[70%] overflow-hidden rounded-2xl shadow-lg group"
+          >
             <img
               src="/kids-hero.avif"
               alt="Kids"
@@ -22,7 +28,10 @@ const Hero = () => {
           </div>
 
           {/* Right side - Electronics + Mens */}
-          <div className="w-[30%] grid grid-rows-2 gap-4">
+          <div
+            onClick={() => navigate("/products")}
+            className="w-[30%] grid grid-rows-2 gap-4"
+          >
             {/* Electronics */}
             <div className="relative overflow-hidden rounded-2xl shadow-lg group">
               <img
@@ -38,7 +47,10 @@ const Hero = () => {
             </div>
 
             {/* Mens */}
-            <div className="relative overflow-hidden rounded-2xl shadow-lg group">
+            <div
+              onClick={() => navigate("/products")}
+              className="relative overflow-hidden rounded-2xl shadow-lg group"
+            >
               <img
                 src="/mens.avif"
                 alt="Mens"
