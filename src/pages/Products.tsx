@@ -47,7 +47,7 @@ const Products = () => {
   return (
     <div className="w-full bg-gray-50 min-h-screen">
       <Navbar />
-      <div className="max-w-[1200px] mx-auto py-24 px-4">
+      <div className="max-w-[1200px] mx-auto py-36 px-4">
         {/* Title */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Our Products</h1>

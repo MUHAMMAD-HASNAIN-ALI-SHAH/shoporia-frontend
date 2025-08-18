@@ -1,6 +1,6 @@
 const Hero = () => {
   return (
-    <div className="w-full flex justify-center mt-16 select-none">
+    <div className="w-full flex justify-center mt-28 select-none">
       <div className="w-full h-[60vh] flex items-center pt-10 px-4 md:px-10">
         <div className="w-full h-full flex gap-4">
           {/* Left side - Kids */}
