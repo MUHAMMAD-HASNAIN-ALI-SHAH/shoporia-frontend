@@ -1,4 +1,3 @@
-import { products } from "../../../data/products";
 import { motion } from "framer-motion";
 import {
   Carousel,
@@ -8,9 +7,10 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ProductCard from "./ProductCard";
+import { useProductStore } from "@/store/useProductStore";
 
 const FeatureProducts = () => {
-  const featuredProducts = products.filter((product) => product.isHotSale);
+  const { products } = useProductStore();
 
   return (
     <div className="w-full flex flex-col justify-center items-center bg-gray-5 py-5">
@@ -29,7 +29,7 @@ const FeatureProducts = () => {
           className="w-full"
         >
           <CarouselContent className="my-3">
-            {featuredProducts.map((feature, index) => (
+            {products.map((feature, index) => (
               <CarouselItem
                 key={index}
                 className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4 w-full"

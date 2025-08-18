@@ -1,21 +1,18 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
+import type { Product } from "@/interface/interface";
 
-const ProductCard = ({ product }: { product: any }) => {
+const ProductCard = ({ product }: { product: Product }) => {
   const {
     name,
-    brand,
     category,
     price,
-    image,
-    isHotSale,
+    images,
     description,
-    rating,
-    reviews,
+    ratingsAverage,
+    ratingsCount,
   } = product;
-  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
@@ -23,32 +20,31 @@ const ProductCard = ({ product }: { product: any }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       className=""
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative overflow-hidden rounded-lg">
         <img
-          src={image}
+          src={images[0]}
           alt={name}
           className="w-full h-64 object-contain bg-gray-100"
         />
-        {isHotSale && <span className="badge">Hot Sale</span>}
       </div>
 
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-500">{brand}</span>
+          <span className="text-sm text-gray-500">{category}</span>
           <div className="flex items-center">
             <StarIcon className="h-4 w-4 text-yellow-400" />
-            <span className="ml-1 text-sm text-gray-600">{rating}</span>
-            <span className="ml-1 text-sm text-gray-400">({reviews})</span>
+            <span className="ml-1 text-sm text-gray-600">{ratingsCount}</span>
+            <span className="ml-1 text-sm text-gray-400">
+              ({ratingsAverage})
+            </span>
           </div>
         </div>
 
         <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
           {name}
         </h3>
-        <p className="text-sm text-gray-500 line-clamp-2">{description}</p>
+        <p className="text-sm text-gray-500 line-clamp-1">{description}</p>
 
         <div className="flex items-center justify-between pt-2">
           <span className="price-tag">${price}</span>

@@ -28,7 +28,7 @@ export function MyOrders() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full mt-24">
       <Navbar />
       <div className="max-w-[1200px] mx-auto py-24 px-4">
         <h1 className="font-bold text-2xl py-3">My Orders</h1>

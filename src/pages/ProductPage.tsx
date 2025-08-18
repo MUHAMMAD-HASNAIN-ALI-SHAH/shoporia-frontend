@@ -3,10 +3,11 @@ import { motion } from "framer-motion";
 import { Star, Loader2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "@/lib/axios";
-import { useProductStore, type Product } from "@/store/useProductStore";
+import { useProductStore } from "@/store/useProductStore";
 import Navbar from "@/components/Home/Navbar/Navbar";
 import Footer from "@/components/Home/Footer/Footer";
 import { useCartStore } from "@/store/useCartStore";
+import type { Product } from "@/interface/interface";
 
 export default function ProductPage() {
   const { productId } = useParams();
@@ -87,7 +88,7 @@ export default function ProductPage() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full mt-28">
       <Navbar />
       <div className="min-h-screen max-w-6xl mx-auto flex flex-col items-start px-6">
         <motion.div
@@ -106,7 +107,7 @@ export default function ProductPage() {
               />
             </div>
             <div className="flex gap-3 overflow-x-auto">
-              {product.images.map((img, idx) => (
+              {product.images.map((img:string, idx:number) => (
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(img)}

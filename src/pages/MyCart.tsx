@@ -44,7 +44,7 @@ const MyCart = () => {
   );
 
   return (
-    <div className="w-full">
+    <div className="w-full mt-28">
       <Navbar />
       <div className="max-w-[1200px] mx-auto py-24 px-4">
         <div className="p-4">

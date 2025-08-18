@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Home/Navbar/Navbar";
 import Footer from "@/components/Home/Footer/Footer";
-import { useProductStore, type Product } from "@/store/useProductStore";
+import { useProductStore } from "@/store/useProductStore";
 import { useNavigate } from "react-router-dom";
+import type { Product } from "@/interface/interface";
 
 const Products = () => {
   const navigate = useNavigate();
