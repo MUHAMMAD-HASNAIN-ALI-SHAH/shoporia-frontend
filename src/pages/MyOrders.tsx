@@ -11,6 +11,9 @@ import Footer from "@/components/Home/Footer/Footer";
 import Navbar from "@/components/Home/Navbar/Navbar";
 import { useEffect } from "react";
 import { useOrderStore } from "@/store/useOrderStore";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
+import { RateForm } from "@/components/MyOrders/RateForm";
 
 export function MyOrders() {
   const { getMyOrders, myOrders, isLoading } = useOrderStore();
@@ -58,6 +61,7 @@ export function MyOrders() {
                     <TableHead className="text-center">
                       Delivery Status
                     </TableHead>
+                    <TableHead className="text-center">Rated</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -78,6 +82,20 @@ export function MyOrders() {
                       <TableCell>${item.product.price}</TableCell>
                       <TableCell className="text-center">
                         {item.status || "No status available"}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <Dialog>
+                          {item.rated ? (
+                            "Rated"
+                          ) : (
+                            <DialogTrigger asChild>
+                              <Button className="text-white bg-blue-500 hover:bg-blue-600">
+                                Rate now
+                              </Button>
+                            </DialogTrigger>
+                          )}
+                          <RateForm orderId={item._id!} />
+                        </Dialog>
                       </TableCell>
                     </TableRow>
                   ))}

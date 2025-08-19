@@ -18,6 +18,7 @@ export interface Order {
   quantity: number;
   createdAt: string;
   status: "pending" | "placed" | "canceled" | "shipped" | "delivered";
+  rated?: boolean;
 }
 
 export interface User {

@@ -57,7 +57,7 @@ const MyCart = () => {
               <div className="space-y-4">
                 {orders.map((item) => (
                   <div
-                    key={item._id} // orderId
+                    key={item._id}
                     className="flex items-center justify-between border p-2 rounded-md"
                   >
                     <div className="flex items-center gap-3">
